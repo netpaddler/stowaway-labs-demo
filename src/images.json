@@ -1,0 +1,176 @@
+{
+  "deck-work": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 0.667
+  },
+  "harbor-dusk": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 0.667
+  },
+  "marina-day": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 0.667
+  },
+  "lounge-view": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 0.667
+  },
+  "monitor-desks": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 0.667
+  },
+  "founders": {
+    "widths": [
+      640,
+      809
+    ],
+    "ratio": 1.4981
+  },
+  "build-nick": {
+    "widths": [
+      640,
+      661
+    ],
+    "ratio": 1.4977
+  },
+  "build-view": {
+    "widths": [
+      640,
+      1024,
+      1600
+    ],
+    "ratio": 1.498
+  },
+  "build-window": {
+    "widths": [
+      640,
+      1024,
+      1600
+    ],
+    "ratio": 1.498
+  },
+  "lounge-laptop": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "booth-focus": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "glass-room": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "oar-wall-desks": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "booth-row": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "chart-lounge": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "wheel-tables": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "window-bar": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "boat-shelf": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "lamp-detail": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "driftwood-detail": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "front-door": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.499
+  },
+  "deck-table": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "dusk-boats": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "dock-pilings": {
+    "widths": [
+      640,
+      1024
+    ],
+    "ratio": 1.498
+  },
+  "logo": {
+    "width": 520,
+    "height": 126
+  }
+}

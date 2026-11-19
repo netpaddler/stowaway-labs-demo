@@ -1,0 +1,192 @@
+<!--{
+  "title": "Book a Desk, Tour or Free Local Day | Stowaway Labs Gig Harbor",
+  "description": "Reserve a desk at Stowaway Labs for yourself or up to six people, seated together. Drop-in is $12/hour with a 2-hour minimum, weekdays 9 to 5. Book a tour or claim a free local day.",
+  "nav": "book",
+  "bodyClass": "page-book",
+  "scripts": ["book.js"]
+}-->
+<section class="page-hero plain book-hero">
+  <div class="container">
+    <p class="eyebrow">Book</p>
+    <h1>Reserve your spot <em>on the water.</em></h1>
+    <p class="lede">Grab a desk for an afternoon, bring your whole crew, claim your free local day, or just come take a look around.</p>
+  </div>
+</section>
+
+<section class="section-sm book-wrap">
+  <div class="container">
+    <div class="tabs" role="tablist" aria-label="What would you like to book?">
+      <button class="tab" role="tab" id="tab-desk" aria-controls="panel-desk" aria-selected="true" data-tab="desk">{{icon:monitor}}<span>Reserve a desk</span></button>
+      <button class="tab" role="tab" id="tab-free-day" aria-controls="panel-free-day" aria-selected="false" tabindex="-1" data-tab="free-day">{{icon:sparkle}}<span>Free local day</span></button>
+      <button class="tab" role="tab" id="tab-tour" aria-controls="panel-tour" aria-selected="false" tabindex="-1" data-tab="tour">{{icon:compass}}<span>Book a tour</span></button>
+    </div>
+
+    <!-- DESK -->
+    <div class="panel" role="tabpanel" id="panel-desk" aria-labelledby="tab-desk" data-panel="desk">
+      <form class="book-layout" id="desk-form" novalidate>
+        <div class="book-steps">
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">1</span> When are you coming?</legend>
+            <p class="step-hint">Open Monday to Friday, 9 a.m. to 5 p.m.</p>
+            <div class="cal" data-cal="desk"></div>
+            <div class="time-grid">
+              <div>
+                <span class="label" id="start-label">Start time</span>
+                <div class="chips" role="radiogroup" aria-labelledby="start-label" data-starts></div>
+              </div>
+              <div>
+                <span class="label" id="dur-label">How long?</span>
+                <div class="stepper" role="group" aria-labelledby="dur-label">
+                  <button type="button" class="step-btn" data-dur="-1" aria-label="Shorter by 30 minutes">{{icon:minus}}</button>
+                  <output class="stepper-val" data-dur-out aria-live="polite">2 hours</output>
+                  <button type="button" class="step-btn" data-dur="1" aria-label="Longer by 30 minutes">{{icon:plus}}</button>
+                </div>
+                <p class="step-hint mb-0" data-dur-hint>2-hour minimum, in 30-minute steps.</p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">2</span> Who is coming, and where to sit?</legend>
+            <div class="people-row">
+              <div>
+                <span class="label" id="ppl-label">Number of people</span>
+                <div class="stepper" role="group" aria-labelledby="ppl-label">
+                  <button type="button" class="step-btn" data-ppl="-1" aria-label="One fewer person">{{icon:minus}}</button>
+                  <output class="stepper-val" data-ppl-out aria-live="polite">1 person</output>
+                  <button type="button" class="step-btn" data-ppl="1" aria-label="One more person">{{icon:plus}}</button>
+                </div>
+              </div>
+              <label class="switch" data-together-wrap hidden>
+                <input type="checkbox" data-together checked>
+                <span class="switch-ui" aria-hidden="true"></span>
+                <span><b>Seat us together</b><br><span class="small muted">Side by side at the same table</span></span>
+              </label>
+            </div>
+            <span class="label mt-1" id="type-label" style="display:block">Desk type</span>
+            <div class="desk-options" role="radiogroup" aria-labelledby="type-label" data-types></div>
+            <div class="seatmap-wrap">
+              <div class="seatmap-head">
+                <span class="label" id="seat-label">Choose seats <span class="muted small" style="font-weight:500">(simplified layout)</span></span>
+                <span class="legend"><i class="lg lg-open"></i>Open <i class="lg lg-taken"></i>Taken <i class="lg lg-mine"></i>Yours</span>
+              </div>
+              <div class="seatmap" data-seatmap aria-labelledby="seat-label"></div>
+              <p class="seat-msg" data-seat-msg aria-live="polite"></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">3</span> Your crew</legend>
+            <div class="cover">
+              <span class="label" id="cover-label">How is this covered?</span>
+              <div class="seg" role="radiogroup" aria-labelledby="cover-label">
+                <label><input type="radio" name="cover" value="dropin" checked><span>Drop-in<small>$12 per person per hour</small></span></label>
+                <label><input type="radio" name="cover" value="member"><span>I’m a member<small>Part-time or Full-time</small></span></label>
+                <label><input type="radio" name="cover" value="flex"><span>Corporate Flex<small>Use our team pool</small></span></label>
+              </div>
+            </div>
+            <div class="guests" data-guests></div>
+          </fieldset>
+
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">4</span> The fine print</legend>
+            <label class="check"><input type="checkbox" data-rules required> <span>Everyone in my group is 18 or older, and we will leave pets at home and check in when we arrive.</span></label>
+            <p class="error-msg" data-rules-err hidden>Please confirm the house rules to continue.</p>
+          </fieldset>
+        </div>
+
+        <aside class="summary" aria-labelledby="sum-h">
+          <div class="summary-card">
+            <h2 id="sum-h" class="summary-h">Your booking</h2>
+            <dl class="sum-list" data-summary></dl>
+            <div class="sum-total" aria-live="polite" data-total></div>
+            <button class="btn btn-primary btn-block" type="submit">Confirm booking {{icon:arrow}}</button>
+            <p class="error-msg mt-1 mb-0" data-form-err hidden></p>
+            <p class="small muted mt-1 mb-0">Plans change. Email <a href="mailto:{{email}}">{{email}}</a> to adjust a booking.</p>
+          </div>
+        </aside>
+      </form>
+      <div class="confirm" data-confirm="desk" hidden tabindex="-1"></div>
+    </div>
+
+    <!-- FREE DAY -->
+    <div class="panel" role="tabpanel" id="panel-free-day" aria-labelledby="tab-free-day" data-panel="free-day" hidden>
+      <form class="book-layout" id="free-form" novalidate>
+        <div class="book-steps">
+          <div class="step free-intro">
+            <span class="tag tag-light">For locals</span>
+            <h2 class="step-title-lg">Your first full day is on us.</h2>
+            <p class="muted">Locals in greater Gig Harbor can spend a full day at Stowaway Labs with every amenity, free. No strings attached.</p>
+          </div>
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">1</span> Pick your day</legend>
+            <p class="step-hint">Any weekday, 9 a.m. to 5 p.m.</p>
+            <div class="cal" data-cal="free"></div>
+          </fieldset>
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">2</span> About you</legend>
+            <div class="field-row">
+              <div class="field"><label for="f-name">Full name</label><input id="f-name" type="text" autocomplete="name" required></div>
+              <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email" required></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="f-phone">Phone <span class="muted">(optional)</span></label><input id="f-phone" type="tel" autocomplete="tel"></div>
+              <div class="field"><label for="f-work">What are you working on? <span class="muted">(optional)</span></label><input id="f-work" type="text" placeholder="A startup, a novel, a remote job..."></div>
+            </div>
+            <label class="check"><input type="checkbox" id="f-local" required> <span>I live in the greater Gig Harbor area.</span></label>
+            <label class="check mt-1"><input type="checkbox" id="f-rules" required> <span>I am 18 or older, will leave pets at home, and will check in when I arrive.</span></label>
+          </fieldset>
+        </div>
+        <aside class="summary">
+          <div class="summary-card">
+            <h2 class="summary-h">Your free day</h2>
+            <dl class="sum-list" data-free-summary></dl>
+            <div class="sum-total"><span>Total</span><b>$0</b></div>
+            <button class="btn btn-primary btn-block" type="submit">Claim my free day {{icon:arrow}}</button>
+            <p class="error-msg mt-1 mb-0" data-free-err hidden></p>
+          </div>
+        </aside>
+      </form>
+      <div class="confirm" data-confirm="free" hidden tabindex="-1"></div>
+    </div>
+
+    <!-- TOUR -->
+    <div class="panel" role="tabpanel" id="panel-tour" aria-labelledby="tab-tour" data-panel="tour" hidden>
+      <form class="book-layout" id="tour-form" novalidate>
+        <div class="book-steps">
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">1</span> Pick a day and time</legend>
+            <p class="step-hint">Tours run Monday to Friday during open hours.</p>
+            <div class="cal" data-cal="tour"></div>
+            <span class="label" id="slot-label">Available times</span>
+            <div class="chips" role="radiogroup" aria-labelledby="slot-label" data-slots></div>
+          </fieldset>
+          <fieldset class="step">
+            <legend class="step-title"><span class="step-num">2</span> About you</legend>
+            <div class="field-row">
+              <div class="field"><label for="t-name">Full name</label><input id="t-name" type="text" autocomplete="name" required></div>
+              <div class="field"><label for="t-email">Email</label><input id="t-email" type="email" autocomplete="email" required></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="t-phone">Phone <span class="muted">(optional)</span></label><input id="t-phone" type="tel" autocomplete="tel"></div>
+              <div class="field"><label for="t-int">Most interested in</label>
+                <select id="t-int"><option>Drop-in coworking</option><option>Part-time membership</option><option>Full-time membership</option><option>Corporate Flex for my team</option><option>Virtual office or boater address</option><option>Hosting an event</option><option>Just curious</option></select></div>
+            </div>
+            <div class="field"><label for="t-ppl">How many people are coming?</label>
+              <select id="t-ppl"><option>Just me</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+          </fieldset>
+        </div>
+        <aside class="summary">
+          <div class="summary-card">
+            <h2 class="summary-h">Your tour</h2>
+            <dl class="sum-list" data-tour-summary></dl>
+            <div class="sum-total"><span>Cost</span><b>Free</b></div>
+            <button class="btn btn-primary btn-block" type="submit">Book my tour {{icon:arrow}}</button>
+            <p class="error-msg mt-1 mb-0" data-tour-err hidden></p>
+          </div>
+        </aside>
+      </form>
+      <div class="confirm" data-confirm="tour" hidden tabindex="-1"></div>
+    </div>
+  </div>
+</section>

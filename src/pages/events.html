@@ -1,0 +1,76 @@
+<!--{
+  "title": "Waterfront Event Venue in Gig Harbor | Stowaway Labs",
+  "description": "Host workshops, meetings, retreats, parties, and gatherings at Stowaway Labs, a waterfront venue on Gig Harbor’s historic downtown waterfront. Send us your event inquiry.",
+  "nav": "events"
+}-->
+<section class="page-hero">
+  <x-img name="harbor-dusk" eager sizes="100vw" alt="" pos="center 60%"></x-img>
+  <div class="container">
+    <p class="eyebrow">Events and venue</p>
+    <h1>Gather where the <em>harbor</em> sets the scene.</h1>
+    <p class="lede">Bring your people to Gig Harbor’s historic waterfront. Workshops, team meetings, retreats, parties, and gatherings of every kind.</p>
+    <div class="btn-row"><a class="btn btn-primary" href="#inquire">Start an inquiry {{icon:arrow}}</a></div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="ev-h">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Made for</p>
+      <h2 id="ev-h">Good ideas. Good company. Great view.</h2>
+    </div>
+    <div class="amenities three">
+      <div class="amenity reveal"><div class="ico">{{icon:board}}</div><h3>Workshops</h3><p>Teach, learn, and make something together, with whiteboards and screens on hand.</p></div>
+      <div class="amenity reveal reveal-d1"><div class="ico">{{icon:users}}</div><h3>Meetings and offsites</h3><p>Get your team out of the usual rooms and into a space that sparks new thinking.</p></div>
+      <div class="amenity reveal reveal-d2"><div class="ico">{{icon:compass}}</div><h3>Retreats</h3><p>Plan the year ahead with the water outside the window.</p></div>
+      <div class="amenity reveal"><div class="ico">{{icon:sparkle}}</div><h3>Parties</h3><p>Celebrate a launch, a milestone, or just a good season.</p></div>
+      <div class="amenity reveal reveal-d1"><div class="ico">{{icon:coffee}}</div><h3>Community gatherings</h3><p>Meetups and get-togethers for the greater Gig Harbor crew.</p></div>
+      <div class="amenity reveal reveal-d2"><div class="ico">{{icon:sun}}</div><h3>Indoor and deck space</h3><p>Shipwreck chic inside, fresh harbor air outside.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-sm" aria-label="Photos of the venue">
+  <div class="container">
+    <div class="trio">
+      <x-img name="chart-lounge" sizes="33vw" alt="The lounge with a leather sofa beneath framed nautical charts"></x-img>
+      <x-img name="booth-row" sizes="33vw" alt="A row of sea-glass green booths along the windows"></x-img>
+      <x-img name="deck-table" sizes="33vw" alt="A deck table with flowers overlooking the marina"></x-img>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-sand" id="inquire" aria-labelledby="inq-h">
+  <div class="container split" style="align-items:start">
+    <div>
+      <p class="eyebrow">Inquire</p>
+      <h2 id="inq-h">Tell us about your event.</h2>
+      <p class="lede">Share a few details and we will get back to you about dates and what will work best.</p>
+      <ul class="info-list mt-2">
+        <li>{{icon:mail}}<div><b>Email</b><a href="mailto:{{email}}?subject=Event%20inquiry">{{email}}</a></div></li>
+        <li>{{icon:phone}}<div><b>Phone</b><a href="{{phoneHref}}">{{phone}}</a></div></li>
+      </ul>
+      <div class="card mt-2" style="background:var(--ink);color:var(--sand);border:0">
+        <span class="tag">Coming 2027</span>
+        <h3 style="color:#fff">Waterfront conference room</h3>
+        <p class="mb-0" style="color:rgba(244,237,225,.85)">A well-equipped room looking out across the harbor, for client meetings and big presentations.</p>
+      </div>
+    </div>
+    <form class="form-card" data-mailto="Event inquiry" novalidate>
+      <div class="field-row">
+        <div class="field"><label for="ev-name">Your name</label><input id="ev-name" name="name" data-label="Name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="ev-email">Email</label><input id="ev-email" name="email" data-label="Email" type="email" autocomplete="email" required></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="ev-type">Type of event</label>
+          <select id="ev-type" name="type" data-label="Event type"><option>Workshop</option><option>Meeting or offsite</option><option>Retreat</option><option>Party or celebration</option><option>Community gathering</option><option>Something else</option></select></div>
+        <div class="field"><label for="ev-date">Preferred date</label><input id="ev-date" name="date" data-label="Preferred date" type="date"></div>
+      </div>
+      <div class="field"><label for="ev-size">Expected guests</label><input id="ev-size" name="guests" data-label="Expected guests" type="number" min="1" inputmode="numeric"></div>
+      <div class="field"><label for="ev-msg">Tell us more</label><textarea id="ev-msg" name="details" data-label="Details" placeholder="What are you planning? Any timing, food, or setup ideas?"></textarea></div>
+      <button class="btn btn-primary btn-block" type="submit">Send inquiry {{icon:arrow}}</button>
+      <p class="small muted mt-1 mb-0">This opens a pre-filled email to {{email}}.</p>
+      <div class="form-success mt-1" data-success hidden tabindex="-1">{{icon:check}}<div><b>Your email is ready to send.</b><br><span class="small">If your mail app did not open, write to <a href="mailto:{{email}}">{{email}}</a>.</span></div></div>
+    </form>
+  </div>
+</section>

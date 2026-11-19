@@ -1,0 +1,67 @@
+<!--{
+  "title": "Visit Stowaway Labs | Hours, Directions and Tours | Gig Harbor, WA",
+  "description": "Visit Stowaway Labs at 8809 N. Harborview Dr., Suite 101, Gig Harbor, WA 98332, under Devoted Kiss Cafe. Open Monday to Friday, 9 a.m. to 5 p.m. Call (253) 525-8911 or request a tour.",
+  "nav": "contact"
+}-->
+<section class="page-hero plain">
+  <div class="container">
+    <p class="eyebrow">Visit</p>
+    <h1>Ahoy. <em>Come on down.</em></h1>
+    <p class="lede">We are on Harborview Drive, under Devoted Kiss Cafe, in the former TideRunner Boat Co. building. Stop by during open hours, book a tour, or send us a note.</p>
+  </div>
+</section>
+
+<section class="section-sm" style="padding-top:0" aria-label="Location and hours">
+  <div class="container visit">
+    <div class="visit-card">
+      <ul class="info-list">
+        <li>{{icon:pin}}<div><b>Address</b>{{street}}<br>{{city}}, {{region}} {{zip}}<br><span class="muted small">Under Devoted Kiss Cafe, in the former TideRunner Boat Co. building</span></div></li>
+        <li>{{icon:clock}}<div><b>Hours</b>Monday to Friday<br>9 a.m. to 5 p.m.<br><span class="muted small">Closed Saturday and Sunday</span></div></li>
+        <li>{{icon:phone}}<div><b>Phone</b><a href="{{phoneHref}}">{{phone}}</a></div></li>
+        <li>{{icon:mail}}<div><b>Email</b><a href="mailto:{{email}}">{{email}}</a></div></li>
+        <li>{{icon:instagram}}<div><b>Instagram</b><a href="{{instagram}}" rel="noopener">@stowawaylabs</a></div></li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-dark" href="{{maps}}" rel="noopener">Open in Google Maps</a>
+        <a class="btn btn-ghost" href="{{login}}" rel="noopener">Member login</a>
+      </div>
+    </div>
+    <div class="map">
+      <iframe title="Map showing Stowaway Labs at 8809 N. Harborview Dr., Gig Harbor" src="https://maps.google.com/maps?q=8809%20N%20Harborview%20Dr%20Suite%20101%2C%20Gig%20Harbor%2C%20WA%2098332&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tour" aria-labelledby="tour-h">
+  <div class="container split" style="align-items:start">
+    <div>
+      <p class="eyebrow">Request a tour</p>
+      <h2 id="tour-h">See it for yourself.</h2>
+      <p class="lede">Get a feel for the space before you commit. Pick a time on our booking page, or send a note and we will find one that works.</p>
+      <p><a class="btn btn-primary" href="book.html#tour">Pick a tour time {{icon:arrow}}</a></p>
+      <h3 class="mt-3" style="font-size:1.15rem">Good to know before you come</h3>
+      <ul class="rules">
+        <li>{{icon:user}} 18 and older</li>
+        <li>{{icon:x}} No pets</li>
+        <li>{{icon:check}} Check in on arrival</li>
+        <li>{{icon:anchor}} Member priority seating</li>
+      </ul>
+    </div>
+    <form class="form-card" data-mailto="Stowaway Labs tour request" novalidate>
+      <h3>Send us a note</h3>
+      <div class="field-row">
+        <div class="field"><label for="c-name">Your name</label><input id="c-name" name="name" data-label="Name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" data-label="Email" type="email" autocomplete="email" required></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="c-phone">Phone <span class="muted">(optional)</span></label><input id="c-phone" name="phone" data-label="Phone" type="tel" autocomplete="tel"></div>
+        <div class="field"><label for="c-topic">I am interested in</label>
+          <select id="c-topic" name="topic" data-label="Interested in"><option>A tour</option><option>Drop-in coworking</option><option>A membership</option><option>Corporate Flex for my team</option><option>Virtual office or boater address</option><option>Hosting an event</option><option>Something else</option></select></div>
+      </div>
+      <div class="field"><label for="c-msg">Message</label><textarea id="c-msg" name="message" data-label="Message" placeholder="When would you like to stop by?"></textarea></div>
+      <button class="btn btn-primary btn-block" type="submit">Send message {{icon:arrow}}</button>
+      <p class="small muted mt-1 mb-0">This opens a pre-filled email to {{email}}.</p>
+      <div class="form-success mt-1" data-success hidden tabindex="-1">{{icon:check}}<div><b>Your email is ready to send.</b><br><span class="small">If your mail app did not open, write to <a href="mailto:{{email}}">{{email}}</a>.</span></div></div>
+    </form>
+  </div>
+</section>
