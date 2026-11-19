@@ -5,69 +5,18 @@
 (function () {
   'use strict';
 
-  var RATE = 12;
-  var OPEN = 9 * 60, CLOSE = 17 * 60, MIN_DUR = 120, STEP = 30, MAX_PEOPLE = 6;
-  var DAYS_AHEAD = 60;
+  var C = window.SWL.core, SMART = window.SWL;
+  var RATE = C.RATE, OPEN = C.OPEN, CLOSE = C.CLOSE, MIN_DUR = C.MIN_DUR, STEP = C.STEP, MAX_PEOPLE = C.MAX_PEOPLE, DAYS_AHEAD = C.DAYS_AHEAD;
   var TOUR_SLOTS = [570, 630, 690, 780, 840, 900, 960]; // 9:30 .. 4:00
+  var TYPES = C.TYPES;
 
-  // Desk zones. Each table is a run of seats on two sides. Seats are ordered
-  // around the table (side A left to right, then side B right to left) so that
-  // a contiguous run is a group sitting side by side.
-  var TYPES = [
-    { id: 'monitor', name: 'Monitor desk', plural: 'Monitor desks', icon: 'monitor', blurb: 'Ultrawide screen, stand, mouse, keyboard', tables: [{ label: 'Oar wall table', cols: 3 }, { label: 'Window table', cols: 3 }] },
-    { id: 'nomonitor', name: 'No-monitor desk', plural: 'No-monitor desks', icon: 'laptop', blurb: 'Open table space for laptops', tables: [{ label: 'Long table', cols: 4 }] },
-    { id: 'heated', name: 'Heated table seat', plural: 'Heated table seats', icon: 'flame', blurb: 'A warm seat for gray days', tables: [{ label: 'Heated table', cols: 3 }] },
-    { id: 'booth', name: 'Booth seat', plural: 'Booth seats', icon: 'booth', blurb: 'Cozy sea-glass booths', tables: [{ label: 'Booth 1', cols: 2 }, { label: 'Booth 2', cols: 2 }, { label: 'Booth 3', cols: 2 }] }
-  ];
-
-  // ---------- helpers ----------
+  // ---------- helpers (shared with the Quick book sheet via smart.js) ----------
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var icon = function (n) { return '<svg class="i" aria-hidden="true"><use href="#i-' + n + '"></use></svg>'; };
-  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-  var fmtTime = function (m) {
-    var h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? 'p.m.' : 'a.m.';
-    var h12 = h % 12 || 12;
-    return h12 + (mm ? ':' + pad(mm) : '') + ' ' + ap;
-  };
-  var fmtTimeShort = function (m) { var h = Math.floor(m / 60), mm = m % 60; return (h % 12 || 12) + ':' + pad(mm); };
-  var fmtDur = function (m) {
-    var h = Math.floor(m / 60), r = m % 60;
-    return (h ? h + (h === 1 ? ' hour' : ' hours') : '') + (r ? (h ? ' ' : '') + r + ' min' : '');
-  };
-  var DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  var MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var fmtDate = function (d) { return DOW[d.getDay()] + ', ' + MON[d.getMonth()] + ' ' + d.getDate(); };
-  var key = function (d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
-  var money = function (n) { return '$' + n.toFixed(n % 1 ? 2 : 0).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
-  var today = function () { var d = new Date(); d.setHours(0, 0, 0, 0); return d; };
-  var nowMin = function () { var d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
-  var sameDay = function (a, b) { return a && b && key(a) === key(b); };
-  var isWeekday = function (d) { var w = d.getDay(); return w > 0 && w < 6; };
-  var validEmail = function (s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); };
-  var hash = function (s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
-  var ref = function (p) { var c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', s = ''; for (var i = 0; i < 5; i++) s += c[Math.floor(Math.random() * c.length)]; return p + '-' + s; };
-
-  // Latest start time still bookable on a given date for a given minimum length
-  function earliestStart(date, len) {
-    if (!sameDay(date, today())) return OPEN;
-    var n = nowMin();
-    var s = Math.max(OPEN, Math.ceil((n + 1) / STEP) * STEP);
-    return s + len <= CLOSE ? s : null;
-  }
-  function dayAvailable(date, len) {
-    if (!isWeekday(date)) return false;
-    var t = today();
-    if (date < t) return false;
-    if ((date - t) / 864e5 > DAYS_AHEAD) return false;
-    return earliestStart(date, len) !== null;
-  }
-  function firstAvailable(len) {
-    var d = today();
-    for (var i = 0; i < 90; i++) { if (dayAvailable(d, len)) return d; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1); }
-    return null;
-  }
+  var icon = C.icon, esc = C.esc, pad = C.pad, fmtTime = C.fmtTime, fmtTimeShort = C.fmtTimeShort, fmtDur = C.fmtDur;
+  var MON = C.MON, fmtDate = C.fmtDate, key = C.key, money = C.money, today = C.today, nowMin = C.nowMin;
+  var sameDay = C.sameDay, isWeekday = C.isWeekday, validEmail = C.validEmail, hash = C.hash, ref = C.ref;
+  var earliestStart = C.earliestStart, dayAvailable = C.dayAvailable, firstAvailable = C.firstAvailable, ics = C.ics;
 
   // ---------- calendar component ----------
   function Calendar(el, opts) {
@@ -131,18 +80,6 @@
     this.el.innerHTML = html;
     if (keepFocus && this.sel) { var s = this.el.querySelector('[data-day="' + key(this.sel) + '"]'); if (s) s.focus(); }
   };
-
-  // ---------- .ics download ----------
-  function ics(title, date, startMin, endMin, desc) {
-    var dt = function (mins) { return key(date).replace(/-/g, '') + 'T' + pad(Math.floor(mins / 60)) + pad(mins % 60) + '00'; };
-    var stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
-    var body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Stowaway Labs//Booking//EN', 'BEGIN:VEVENT',
-      'UID:' + Date.now() + '@stowawaylabs.com', 'DTSTAMP:' + stamp,
-      'DTSTART;TZID=America/Los_Angeles:' + dt(startMin), 'DTEND;TZID=America/Los_Angeles:' + dt(endMin),
-      'SUMMARY:' + title, 'LOCATION:Stowaway Labs\\, 8809 N. Harborview Dr.\\, Suite 101\\, Gig Harbor\\, WA 98332',
-      'DESCRIPTION:' + desc.replace(/\n/g, '\\n').replace(/,/g, '\\,'), 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
-    return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(body);
-  }
 
   function confirmScreen(target, form, o) {
     var rows = o.rows.map(function (r) { return '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>'; }).join('');
@@ -295,71 +232,11 @@
     $('[data-together-wrap]').hidden = S.people < 2;
   }
 
-  // Seat model
-  function seatsFor(type) {
-    var out = [];
-    type.tables.forEach(function (tb, ti) {
-      var n = tb.cols, order = 0;
-      for (var c = 0; c < n; c++) out.push({ id: type.id + '-' + ti + '-A' + c, table: ti, side: 'A', col: c, order: order++ });
-      for (var c2 = n - 1; c2 >= 0; c2--) out.push({ id: type.id + '-' + ti + '-B' + c2, table: ti, side: 'B', col: c2, order: order++ });
-    });
-    return out;
-  }
-  function takenSet(type) {
-    // Deterministic "already booked" seats for the chosen date and time window.
-    var set = {};
-    var dk = key(S.date || today()), multi = type.tables.length > 1;
-    var openTable = hash(dk + type.id) % type.tables.length; // keep one table clear for groups
-    seatsFor(type).forEach(function (s) {
-      if (multi && s.table === openTable) return;
-      var h = hash(dk + '|' + Math.floor(S.start / 60) + '|' + s.id);
-      if (h % 100 < (multi ? 30 : 18)) set[s.id] = true;
-    });
-    return set;
-  }
-  function typeById(id) { return TYPES.filter(function (t) { return t.id === id; })[0]; }
-  function openCount(type) { var tk = takenSet(type); return seatsFor(type).filter(function (s) { return !tk[s.id]; }).length; }
-
-  // Find a contiguous run of open seats (around a table) of length n.
-  function findBlock(type, n, preferId) {
-    var tk = takenSet(type), all = seatsFor(type), best = null;
-    type.tables.forEach(function (tb, ti) {
-      var ring = all.filter(function (s) { return s.table === ti; });
-      var L = ring.length;
-      if (n > L) return;
-      for (var st = 0; st < L; st++) {
-        var block = [];
-        for (var k = 0; k < n; k++) {
-          var s = ring[(st + k) % L];
-          if (tk[s.id]) { block = null; break; }
-          block.push(s.id);
-        }
-        if (!block) continue;
-        if (preferId && block.indexOf(preferId) === 0) { best = block; return; }
-        if (!best) best = block;
-      }
-    });
-    if (preferId) {
-      // Prefer a block that starts at, or at least includes, the clicked seat
-      var withPref = null;
-      type.tables.forEach(function (tb, ti) {
-        var ring = all.filter(function (s) { return s.table === ti; }), L = ring.length;
-        if (n > L) return;
-        for (var st = 0; st < L && !withPref; st++) {
-          var block = [];
-          for (var k = 0; k < n; k++) { var s = ring[(st + k) % L]; if (tk[s.id]) { block = null; break; } block.push(s.id); }
-          if (block && block[0] === preferId) withPref = block;
-        }
-        for (var st2 = 0; st2 < L && !withPref; st2++) {
-          var b2 = [];
-          for (var k2 = 0; k2 < n; k2++) { var s2 = ring[(st2 + k2) % L]; if (tk[s2.id]) { b2 = null; break; } b2.push(s2.id); }
-          if (b2 && b2.indexOf(preferId) > -1) withPref = b2;
-        }
-      });
-      if (withPref) return withPref;
-    }
-    return best;
-  }
+  // Seat model (shared core)
+  var seatsFor = C.seatsFor, typeById = C.typeById;
+  function takenSet(type) { return C.takenSet(type, S.date || today(), S.start); }
+  function openCount(type) { return C.openSeats(type, S.date || today(), S.start).length; }
+  function findBlock(type, n, preferId) { return C.findBlock(type, n, S.date || today(), S.start, preferId); }
 
   function autoSeat() {
     var type = typeById(S.type), tk = takenSet(type);
@@ -492,14 +369,7 @@
     r.addEventListener('change', function () { S.cover = r.value; renderGuests(); });
   });
 
-  function pricing() {
-    var hrs = S.dur / 60, paying = 0, covered = 0;
-    S.guests.forEach(function (g, i) {
-      var c = S.cover === 'flex' || (S.cover === 'member' && (i === 0 || g.member));
-      if (c) covered++; else paying++;
-    });
-    return { hrs: hrs, paying: paying, covered: covered, total: paying * hrs * RATE, poolHours: S.cover === 'flex' ? S.people * hrs : 0 };
-  }
+  function pricing() { return C.price(S); }
 
   function renderSummary() {
     if (!S.date) return;
@@ -520,17 +390,7 @@
       (p.paying ? '' : '<p class="small muted mb-0">' + (S.cover === 'flex' ? 'Covered by your Corporate Flex pool.' : 'Covered by membership.') + '</p>');
     var fh = $('[data-flex-hours]'); if (fh) fh.textContent = p.poolHours + ' hours';
   }
-  function seatNames() {
-    var type = typeById(S.type), all = seatsFor(type);
-    var byTable = {};
-    S.seats.forEach(function (id) {
-      var s = all.filter(function (x) { return x.id === id; })[0];
-      if (!s) return;
-      (byTable[s.table] = byTable[s.table] || []).push(s.order + 1);
-    });
-    var parts = Object.keys(byTable).map(function (t) { return type.tables[t].label + ' ' + byTable[t].sort(function (a, b) { return a - b; }).join(', '); });
-    return parts.join('; ') || 'None yet';
-  }
+  function seatNames() { return C.seatNames(typeById(S.type), S.seats); }
 
   deskForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -554,6 +414,7 @@
     if (msg) { err.textContent = msg; err.hidden = false; if (firstBad) firstBad.focus(); return; }
 
     var type = typeById(S.type), p = pricing(), r = ref('SWL');
+    SMART.memory.recordBooking({ date: S.date, start: S.start, dur: S.dur, type: S.type, people: S.people, together: S.together, cover: S.cover, guests: S.guests, ref: r });
     var guestList = '<ul class="confirm-guests">' + S.guests.map(function (g, i) {
       var covered = S.cover === 'flex' || (S.cover === 'member' && (i === 0 || g.member));
       return '<li><span class="guest-av" aria-hidden="true">' + esc(initials(i)) + '</span><span><b>' + esc(g.name) + '</b>' + (g.email ? '<br><span class="small muted">' + esc(g.email) + '</span>' : '') + '</span><span class="pill' + (covered ? '' : ' pill-rate') + '">' + (covered ? 'Covered' : money(p.hrs * RATE)) + '</span></li>';
@@ -571,7 +432,7 @@
       ],
       extra: guestList,
       ics: ics('Stowaway Labs: ' + type.name + (S.people > 1 ? ' for ' + S.people : ''), S.date, S.start, S.start + S.dur, desc),
-      reset: function () { rules.checked = false; }
+      reset: function () { rules.checked = rules.defaultChecked = SMART.memory.rulesOK(); renderCrew(); renderNudge(); }
     });
   });
 
@@ -602,6 +463,7 @@
     }
     err.hidden = true;
     var r = ref('SWL-FREE');
+    SMART.memory.rememberPerson(name.value, email.value);
     confirmScreen($('[data-confirm="free"]'), $('#free-form'), {
       eyebrow: 'Welcome aboard, ' + esc(name.value.trim().split(' ')[0]),
       title: 'Your free day is set.',
@@ -653,6 +515,7 @@
     if (bad) { err.textContent = 'Please add your name and a valid email.'; err.hidden = false; bad.focus(); return; }
     err.hidden = true;
     var r = ref('SWL-TOUR');
+    SMART.memory.rememberPerson(name.value, email.value);
     confirmScreen($('[data-confirm="tour"]'), $('#tour-form'), {
       eyebrow: 'See you soon, ' + esc(name.value.trim().split(' ')[0]),
       title: 'Your tour is booked.',
@@ -664,15 +527,136 @@
     });
   });
 
+  // =====================================================================
+  // Smart layer: prefill from suggestions, crew chips, savings nudge
+  // =====================================================================
+  // Apply a full plan (date, time, desk, crew) to the form, ready to edit.
+  function applyPlan(p) {
+    if (!p || !p.date || !dayAvailable(p.date, MIN_DUR)) return false;
+    S.date = p.date;
+    S.start = Math.max(p.start, earliestStart(p.date, MIN_DUR));
+    S.dur = p.dur;
+    S.type = p.type;
+    S.people = p.people;
+    S.together = p.people > 1 ? p.together !== false : true;
+    S.cover = p.cover || 'dropin';
+    S.guests = [];
+    for (var i = 0; i < S.people; i++) {
+      var g = (p.guests || [])[i] || {};
+      S.guests.push({ name: g.name || '', email: g.email || '', member: !!g.member });
+    }
+    fillLead();
+    var radio = $('input[name="cover"][value="' + S.cover + '"]'); if (radio) radio.checked = true;
+    together.checked = S.together;
+    deskCal.sel = S.date;
+    deskCal.view = new Date(S.date.getFullYear(), S.date.getMonth(), 1);
+    deskCal.render();
+    clampDur(); autoSeat(); renderPeople(); renderTimes(); renderGuests(); renderDesk(); renderCrew();
+    return true;
+  }
+  // Fill the booking lead from the remembered profile if the form is blank.
+  function fillLead() {
+    var prof = SMART.memory.profile();
+    ensureGuests();
+    if (prof && !S.guests[0].name && !S.guests[0].email) { S.guests[0].name = prof.name; S.guests[0].email = prof.email; }
+  }
+  function flash() {
+    var f = $('.book-steps');
+    f.classList.remove('is-filled'); void f.offsetWidth; f.classList.add('is-filled');
+  }
+  // Exact match first; a plan that duplicated the usual was merged into it.
+  function planById(id) {
+    var all = SMART.suggest.plans();
+    return all.filter(function (o) { return o.id === id; })[0] || (id === 'next' ? null : all[0]);
+  }
+  function fillFrom(id, quiet) {
+    var o = planById(id);
+    if (!o || !applyPlan(o.plan)) return false;
+    selectTab('desk');
+    flash();
+    if (!quiet) SMART.toast('Filled in: ' + SMART.suggest.describe(o.plan) + '. Change anything, then confirm.');
+    return true;
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-fill]');
+    if (!b) return;
+    if (fillFrom(b.getAttribute('data-fill'))) {
+      var target = window.matchMedia('(min-width: 1000px)').matches ? $('#desk-form') : $('.summary');
+      target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    }
+  });
+
+  // Crews you have booked with before: one tap sets the party and names.
+  function crews() {
+    var seen = {}, out = [];
+    SMART.memory.bookings().reverse().forEach(function (b) {
+      if (b.people < 2) return;
+      var names = b.guests.slice(1).map(function (g) { return g.name; }).filter(Boolean);
+      if (!names.length) return;
+      var k = b.people + '|' + names.join('|').toLowerCase();
+      if (seen[k]) return;
+      seen[k] = 1;
+      out.push({ people: b.people, guests: b.guests });
+    });
+    return out.slice(0, 3);
+  }
+  function renderCrew() {
+    var box = $('[data-crew]'), list = crews();
+    if (!list.length) { box.hidden = true; box.innerHTML = ''; return; }
+    var activeKey = function (c) { return S.people === c.people && c.guests.slice(1).every(function (g, i) { return (S.guests[i + 1] || {}).name === g.name; }); };
+    box.innerHTML = '<span class="label">Your crews</span><div class="crew-chips">' +
+      '<button type="button" class="crew-chip" data-crew-i="-1" aria-pressed="' + (S.people === 1) + '">' + icon('user') + ' Just me</button>' +
+      list.map(function (c, i) {
+        var names = c.guests.slice(1).map(function (g) { return C.firstName(g.name); }).filter(Boolean);
+        return '<button type="button" class="crew-chip" data-crew-i="' + i + '" aria-pressed="' + activeKey(c) + '">' + icon('users') + ' You + ' + esc(names.join(' + ')) + '</button>';
+      }).join('') + '</div>';
+    box.hidden = false;
+    box._list = list;
+  }
+  $('[data-crew]').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-crew-i]');
+    if (!b) return;
+    var i = +b.getAttribute('data-crew-i'), c = this._list[i];
+    ensureGuests();
+    var lead = S.guests[0];
+    if (!c) { S.people = 1; S.guests = [lead]; }
+    else {
+      S.people = c.people; S.together = true; together.checked = true;
+      S.guests = [lead].concat(c.guests.slice(1).map(function (g) { return { name: g.name, email: g.email, member: !!g.member }; }));
+    }
+    autoSeat(); renderPeople(); renderGuests(); renderDesk(); renderCrew();
+    var again = $('[data-crew-i="' + i + '"]'); if (again) again.focus();
+  });
+
+  // Membership savings, right next to the price.
+  function renderNudge() {
+    var box = $('[data-nudge]'), sv = SMART.suggest.savings();
+    if (!sv || (!sv.best && !sv.leadHours)) { box.hidden = true; return; }
+    if (sv.best) box.innerHTML = icon('tag') + '<span><b>' + sv.best.plan + ' would have saved ' + (sv.best.scope === 'team' ? 'your team ' : 'you ') + money(sv.best.save) + '</b> over the last 30 days (' + (sv.best.scope === 'team' ? sv.totalHours : sv.leadHours) + ' drop-in hours). <a href="' + sv.best.href + '">Compare plans</a></span>';
+    else box.innerHTML = icon('tag') + '<span>You are at ' + sv.leadHours + ' drop-in hours this month. Part-time pays off at ' + sv.breakEven + '. <a href="memberships.html">See plans</a></span>';
+    box.hidden = false;
+  }
+  SMART.onChange(function () { renderCrew(); renderNudge(); });
+
   // ---------- init ----------
   if (!S.date) { $('[data-cal="desk"]').insertAdjacentHTML('afterend', '<p class="error-msg">No dates are open right now. Please email ahoy@stowawaylabs.com.</p>'); }
   together.checked = S.together;
   clampDur();
   autoSeat();
-  ensureGuests();
+  fillLead();
+  if (SMART.memory.rulesOK()) $('[data-rules]').checked = $('[data-rules]').defaultChecked = true;
   renderPeople();
   renderTimes();
   renderGuests();
   renderDesk();
+  renderCrew();
+  renderNudge();
   fromHash();
+  var pre = params.get('prefill');
+  if (pre && S.date) {
+    fillFrom(pre, true) || (pre === 'next' && flash());
+    params.delete('prefill');
+    history.replaceState(null, '', location.pathname + (params.toString() ? '?' + params : '') + location.hash);
+    if (planById(pre) || pre === 'next') SMART.toast('All filled in. Change anything you like, then confirm.');
+  }
 })();

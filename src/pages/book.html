@@ -15,6 +15,7 @@
 
 <section class="section-sm book-wrap">
   <div class="container">
+    <div class="smart-book" data-smart-book hidden></div>
     <div class="tabs" role="tablist" aria-label="What would you like to book?">
       <button class="tab" role="tab" id="tab-desk" aria-controls="panel-desk" aria-selected="true" data-tab="desk">{{icon:monitor}}<span>Reserve a desk</span></button>
       <button class="tab" role="tab" id="tab-free-day" aria-controls="panel-free-day" aria-selected="false" tabindex="-1" data-tab="free-day">{{icon:sparkle}}<span>Free local day</span></button>
@@ -48,6 +49,7 @@
 
           <fieldset class="step">
             <legend class="step-title"><span class="step-num">2</span> Who is coming, and where to sit?</legend>
+            <div class="crew" data-crew hidden></div>
             <div class="people-row">
               <div>
                 <span class="label" id="ppl-label">Number of people</span>
@@ -100,6 +102,7 @@
             <h2 id="sum-h" class="summary-h">Your booking</h2>
             <dl class="sum-list" data-summary></dl>
             <div class="sum-total" aria-live="polite" data-total></div>
+            <p class="nudge" data-nudge hidden></p>
             <button class="btn btn-primary btn-block" type="submit">Confirm booking {{icon:arrow}}</button>
             <p class="error-msg mt-1 mb-0" data-form-err hidden></p>
             <p class="small muted mt-1 mb-0">Plans change. Email <a href="mailto:{{email}}">{{email}}</a> to adjust a booking.</p>

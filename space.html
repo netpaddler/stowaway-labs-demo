@@ -23,9 +23,9 @@
 <link rel="stylesheet" href="assets/css/site.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://www.stowawaylabs.com/#business","name":"Stowaway Labs","slogan":"Gig Harbor coworking for the adventurous","description":"Waterfront coworking space and community hub in downtown Gig Harbor, Washington, with indoor and deck workspace, gigabit Wi-Fi, soundproof meeting booths, virtual office and mail service, and a waterfront event venue.","url":"https://www.stowawaylabs.com/","logo":"https://www.stowawaylabs.com/assets/img/logo-ink.png","image":["https://www.stowawaylabs.com/assets/img/og-stowaway-labs.jpg","https://www.stowawaylabs.com/assets/img/lounge-view-1024.jpg","https://www.stowawaylabs.com/assets/img/monitor-desks-1024.jpg"],"email":"ahoy@stowawaylabs.com","telephone":"+1-253-525-8911","priceRange":"$12 to $750","foundingDate":"2025-09-22","founder":[{"@type":"Person","name":"Nick Gough"},{"@type":"Person","name":"Lauren Gough"}],"address":{"@type":"PostalAddress","streetAddress":"8809 N. Harborview Dr., Suite 101","addressLocality":"Gig Harbor","addressRegion":"WA","postalCode":"98332","addressCountry":"US"},"hasMap":"https://www.google.com/maps/search/?api=1&query=Stowaway+Labs+8809+N+Harborview+Dr+Suite+101+Gig+Harbor+WA+98332","areaServed":"Greater Gig Harbor, Washington","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"17:00"}],"sameAs":["https://www.instagram.com/stowawaylabs/"],"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Indoor workspace","value":true},{"@type":"LocationFeatureSpecification","name":"Outdoor waterfront deck workspace","value":true},{"@type":"LocationFeatureSpecification","name":"Gigabit Wi-Fi","value":true},{"@type":"LocationFeatureSpecification","name":"Free printing","value":true},{"@type":"LocationFeatureSpecification","name":"Ultrawide monitors","value":true},{"@type":"LocationFeatureSpecification","name":"Laptop stands, mice and keyboards","value":true},{"@type":"LocationFeatureSpecification","name":"Whiteboards","value":true},{"@type":"LocationFeatureSpecification","name":"Coffee and snacks bar","value":true},{"@type":"LocationFeatureSpecification","name":"Soundproof meeting booths","value":true}],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Coworking and virtual office","itemListElement":[{"@type":"Offer","name":"Drop-in coworking","description":"Hourly access, 2-hour minimum, weekdays 9 a.m. to 5 p.m.","priceSpecification":{"@type":"UnitPriceSpecification","price":12,"priceCurrency":"USD","unitCode":"HUR"}},{"@type":"Offer","name":"Part-time membership","description":"Up to 50 hours per month, priority workspace booking, local-business discounts.","priceSpecification":{"@type":"UnitPriceSpecification","price":250,"priceCurrency":"USD","unitCode":"MON"}},{"@type":"Offer","name":"Full-time membership","description":"Unlimited weekday access, private storage locker, virtual office included.","priceSpecification":{"@type":"UnitPriceSpecification","price":500,"priceCurrency":"USD","unitCode":"MON"}},{"@type":"Offer","name":"Corporate Flex","description":"A shared pool of 100 hours per month for your team.","priceSpecification":{"@type":"UnitPriceSpecification","price":750,"priceCurrency":"USD","unitCode":"MON"}},{"@type":"Offer","name":"Virtual office and mail","description":"Waterfront business address and private mailbox. $39 per month for members.","priceSpecification":{"@type":"UnitPriceSpecification","price":49,"priceCurrency":"USD","unitCode":"MON"}}]}}</script>
 
-<script src="assets/js/site.js" defer></script>
+<script src="assets/js/site.js" defer></script><script src="assets/js/smart.js" defer></script>
 </head>
-<body class="">
+<body class="" data-page="space">
 <div hidden><svg xmlns="http://www.w3.org/2000/svg">
 <defs>
 <symbol id="i-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5 12.6a10 10 0 0 1 14 0"/><path d="M8.5 16.3a5 5 0 0 1 7 0"/><circle cx="12" cy="19.6" r=".9" fill="currentColor"/></symbol>
@@ -77,6 +77,7 @@
     <a class="brand" href="index.html" aria-label="Stowaway Labs home">
       <img src="assets/img/logo-ink.png" alt="Stowaway Labs" width="520" height="126">
     </a>
+    <a class="quick-btn" href="book.html" data-quick aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sparkle"></use></svg><span>Quick book</span></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
       <span class="nav-toggle-bars" aria-hidden="true"></span><span class="sr-only">Menu</span>
     </button>
@@ -226,6 +227,7 @@
   </div>
   <div class="container footer-base">
     <p>&copy; <span data-year>2026</span> Stowaway Labs, Gig Harbor, Washington. <a href="https://www.stowawaylabs.com/land-acknowledgement" rel="noopener">Land acknowledgement</a></p>
+    <p><button type="button" class="link-btn footer-forget" data-forget hidden>Forget my preferences</button></p>
     <p>Photography by <a href="https://jahnilynnphoto.com" rel="noopener">Jahni Lynn Photo</a> and Beyond Harbor Waves.</p>
   </div>
 </footer>

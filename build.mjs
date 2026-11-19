@@ -72,6 +72,7 @@ function header(active) {
     <a class="brand" href="index.html" aria-label="Stowaway Labs home">
       <img src="assets/img/logo-ink.png" alt="Stowaway Labs" width="${images.logo.width}" height="${images.logo.height}">
     </a>
+    <a class="quick-btn" href="book.html" data-quick aria-haspopup="dialog">${icon('sparkle')}<span>Quick book</span></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
       <span class="nav-toggle-bars" aria-hidden="true"></span><span class="sr-only">Menu</span>
     </button>
@@ -123,6 +124,7 @@ function footer() {
   </div>
   <div class="container footer-base">
     <p>&copy; <span data-year>2026</span> Stowaway Labs, Gig Harbor, Washington. <a href="${SITE.land}" rel="noopener">Land acknowledgement</a></p>
+    <p><button type="button" class="link-btn footer-forget" data-forget hidden>Forget my preferences</button></p>
     <p>Photography by <a href="https://jahnilynnphoto.com" rel="noopener">Jahni Lynn Photo</a> and Beyond Harbor Waves.</p>
   </div>
 </footer>`;
@@ -209,9 +211,9 @@ function layout(meta, body, file) {
 <link rel="stylesheet" href="assets/css/site.css">
 ${jsonLd()}
 ${meta.extraHead || ''}
-<script src="assets/js/site.js" defer></script>${scripts}
+<script src="assets/js/site.js" defer></script><script src="assets/js/smart.js" defer></script>${scripts}
 </head>
-<body class="${meta.bodyClass || ''}">
+<body class="${meta.bodyClass || ''}" data-page="${meta.nav || ''}">
 <div hidden>${sprite}</div>
 ${header(meta.nav)}
 <main id="main">

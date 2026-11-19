@@ -30,7 +30,7 @@ for (const f of pages) {
   }
   if ((html.match(/<h1\b/g) || []).length !== 1) fail(f, 'should have exactly one h1');
 }
-const jsCss = ['assets/js/book.js', 'assets/js/site.js'].map((f) => fs.readFileSync(path.join(root, f), 'utf8')).join('');
+const jsCss = ['assets/js/book.js', 'assets/js/site.js', 'assets/js/smart.js', 'assets/css/site.css'].map((f) => fs.readFileSync(path.join(root, f), 'utf8')).join('');
 if (/[–—]/.test(jsCss)) fail('assets/js', 'contains an em or en dash');
 console.log(problems ? `\n${problems} problem(s) in ${pages.length} pages` : `✓ ${pages.length} pages passed static checks`);
 process.exit(problems ? 1 : 0);
